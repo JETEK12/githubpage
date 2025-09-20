@@ -36,22 +36,32 @@
     .sunflower {
         position: absolute;
         bottom: -150px;
-        width: 150px;
+        width: 150px; /* Tamaño total del girasol */
         height: 150px;
         animation: growAndSway 10s linear forwards;
         transform-origin: center bottom;
+    }
+
+    /* Contenedor de pétalos para asegurar el z-index */
+    .sunflower .petals-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 5; /* Asegura que los pétalos estén debajo del centro */
     }
 
     .petal {
         position: absolute;
         width: 40px;
         height: 75px;
-        background: #FFD700;
+        background: #FFD700; /* Amarillo girasol */
         border-radius: 50% 50% 0 0;
         top: 50%;
         left: 50%;
         transform-origin: bottom center;
-        margin-left: -20px; /* Mitad del width */
+        margin-left: -20px; /* Mitad del width del pétalo para centrar */
         box-shadow: 0 0 8px rgba(0,0,0,0.3);
     }
     
@@ -65,15 +75,15 @@
     
     .center {
         position: absolute;
-        width: 55px;
-        height: 55px;
+        width: 70px; /* **AJUSTADO**: Centro más grande */
+        height: 70px; /* **AJUSTADO**: Centro más grande */
         background: #654321;
         border-radius: 50%;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        z-index: 10;
-        box-shadow: inset 0 0 10px #2F1E0E;
+        z-index: 10; /* Asegura que el centro esté SIEMPRE encima */
+        box-shadow: inset 0 0 12px #2F1E0E; /* Sombra interior para profundidad */
     }
 
     @keyframes growAndSway {
@@ -141,9 +151,10 @@
         const sunflower = document.createElement('div');
         sunflower.classList.add('sunflower');
         
+        // Contenedor para los pétalos (clave para el z-index)
         const petalsContainer = document.createElement('div');
+        petalsContainer.classList.add('petals-container');
 
-        // **CLAVE: CREAR DOS CAPAS DE PÉTALOS**
         const backPetals = 8;
         const frontPetals = 10;
 
@@ -152,7 +163,7 @@
             const petal = document.createElement('div');
             petal.classList.add('petal', 'back');
             const rotation = (360 / backPetals) * i;
-            petal.style.transform = `rotate(${rotation}deg) translateY(-35px)`;
+            petal.style.transform = `rotate(${rotation}deg) translateY(-30px)`; /* Ajuste aquí */
             petalsContainer.appendChild(petal);
         }
 
@@ -160,15 +171,14 @@
         for (let i = 0; i < frontPetals; i++) {
             const petal = document.createElement('div');
             petal.classList.add('petal', 'front');
-            // El desfase de 18deg ((360 / 10) / 2) los coloca entre los pétalos traseros
             const rotation = ((360 / frontPetals) * i) + 18;
-            petal.style.transform = `rotate(${rotation}deg) translateY(-40px)`;
+            petal.style.transform = `rotate(${rotation}deg) translateY(-35px)`; /* Ajuste aquí */
             petalsContainer.appendChild(petal);
         }
 
         sunflower.appendChild(petalsContainer);
 
-        // 3. El centro se añade al final para que esté encima de todo
+        // 3. El centro se añade al final de `sunflower` para que esté encima de `petals-container`
         const centerDiv = document.createElement('div');
         centerDiv.classList.add('center');
         sunflower.appendChild(centerDiv);
