@@ -106,24 +106,26 @@
     h1, p {
         position: relative;
         z-index: 100;
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        /* **AQUÍ ESTÁ EL CAMBIO** */
+        text-shadow: 
+            -1px -1px 0 #000,  
+             1px -1px 0 #000,
+            -1px  1px 0 #000,
+             1px  1px 0 #000; /* Contorno negro */
     }
     h1 { margin-top: 20vh; font-size: 2.5em; }
     
     p {
         max-width: 600px;
         margin: 20px auto;
-        font-size: 1.8em; /* Un poco más grande para la nueva fuente */
+        font-size: 1.8em;
         line-height: 1.6em;
-        
-        /* --- AJUSTES --- */
-        text-align: center; /* 2. Texto centrado */
-        font-family: 'Dancing Script', cursive; /* 3. Fuente romántica */
-        animation: fadeInText 3s ease-in forwards; /* 4. Animación de aparición */
-        opacity: 0; /* Empieza invisible para la animación */
+        text-align: center;
+        font-family: 'Dancing Script', cursive;
+        animation: fadeInText 3s ease-in forwards;
+        opacity: 0;
     }
 
-    /* 5. Keyframes para la animación del texto */
     @keyframes fadeInText {
         from { opacity: 0; }
         to { opacity: 1; }
@@ -134,10 +136,12 @@
 
 <h1>Hola mi libélula, mi amor y mi reyna</h1>
 
-<p>Se dice que las pinturas rupestres se hicieron para representar algo,</p>
-<p>las palabras se hicieron para expresar y transmitir,</p>
-<p>y es curioso como al ver tus ojos y sentir tu calor,</p>
-<p>no puedo decir palabra alguna, y no hay imagen que pueda igualar tan maravilloso sentir❤️</p>
+<p>
+    Se dice que las pinturas rupestres se hicieron para representar algo,<br>
+    las palabras se hicieron para expresar y transmitir,<br>  
+    y es curioso como al ver tus ojos y sentir tu calor,<br>
+    no puedo decir palabra alguna, y no hay imagen que pueda igualar tan maravilloso sentir❤️
+</p>
 
 <script>
     // --- LÓGICA PARA ESTRELLAS ---
