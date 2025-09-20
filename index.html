@@ -32,58 +32,49 @@
         100% { opacity: 0.4; transform: scale(0.8); }
     }
 
-    /* --- GIRASOLES DEFINITIVOS --- */
+    /* --- GIRASOLES (AHORA SÍ) --- */
     .sunflower {
         position: absolute;
         bottom: -150px;
-        width: 150px; /* Tamaño total del girasol */
+        width: 150px;
         height: 150px;
         animation: growAndSway 10s linear forwards;
         transform-origin: center bottom;
-    }
-
-    /* Contenedor de pétalos para asegurar el z-index */
-    .sunflower .petals-container {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        z-index: 5; /* Asegura que los pétalos estén debajo del centro */
     }
 
     .petal {
         position: absolute;
         width: 40px;
         height: 75px;
-        background: #FFD700; /* Amarillo girasol */
+        background: #FFD700;
         border-radius: 50% 50% 0 0;
-        top: 50%;
+        top: 0; /* Lo posicionamos en la parte superior del contenedor */
         left: 50%;
-        transform-origin: bottom center;
-        margin-left: -20px; /* Mitad del width del pétalo para centrar */
-        box-shadow: 0 0 8px rgba(0,0,0,0.3);
+        margin-left: -20px; /* Centramos el pétalo horizontalmente */
+        transform-origin: bottom center; /* La rotación ocurre desde la base */
     }
     
     .petal.back {
-        background: #EAA200; /* Un tono más oscuro para la capa trasera */
+        background: #EAA200;
+        transform: scale(1.05); /* Ligeramente más grandes para que asomen */
+        z-index: 5;
     }
 
     .petal.front {
-        transform: scale(0.9); /* Ligeramente más pequeños */
+        z-index: 6;
     }
     
     .center {
         position: absolute;
-        width: 70px; /* **AJUSTADO**: Centro más grande */
-        height: 70px; /* **AJUSTADO**: Centro más grande */
+        width: 65px; /* **TAMAÑO CLAVE** */
+        height: 65px; /* **TAMAÑO CLAVE** */
         background: #654321;
         border-radius: 50%;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        z-index: 10; /* Asegura que el centro esté SIEMPRE encima */
-        box-shadow: inset 0 0 12px #2F1E0E; /* Sombra interior para profundidad */
+        z-index: 10;
+        box-shadow: inset 0 0 12px #2F1E0E;
     }
 
     @keyframes growAndSway {
@@ -146,39 +137,36 @@
     let heartInterval = setInterval(createHeart, 200);
     setTimeout(() => clearInterval(heartInterval), 1000);
 
-    // --- LÓGICA PARA GIRASOLES (Reestructurada) ---
+    // --- LÓGICA PARA GIRASOLES (Simplificada) ---
     function createSunflower() {
         const sunflower = document.createElement('div');
         sunflower.classList.add('sunflower');
-        
-        // Contenedor para los pétalos (clave para el z-index)
-        const petalsContainer = document.createElement('div');
-        petalsContainer.classList.add('petals-container');
 
+        // **LÓGICA SIMPLIFICADA Y CORREGIDA**
         const backPetals = 8;
         const frontPetals = 10;
 
-        // 1. Capa de pétalos traseros (más oscuros)
+        // 1. Capa de pétalos traseros
         for (let i = 0; i < backPetals; i++) {
             const petal = document.createElement('div');
             petal.classList.add('petal', 'back');
             const rotation = (360 / backPetals) * i;
-            petal.style.transform = `rotate(${rotation}deg) translateY(-30px)`; /* Ajuste aquí */
-            petalsContainer.appendChild(petal);
+            // **SIN TRANSLATEY, SOLO ROTACIÓN**
+            petal.style.transform = `rotate(${rotation}deg)`;
+            sunflower.appendChild(petal);
         }
 
-        // 2. Capa de pétalos delanteros (más claros y pequeños)
+        // 2. Capa de pétalos delanteros
         for (let i = 0; i < frontPetals; i++) {
             const petal = document.createElement('div');
             petal.classList.add('petal', 'front');
-            const rotation = ((360 / frontPetals) * i) + 18;
-            petal.style.transform = `rotate(${rotation}deg) translateY(-35px)`; /* Ajuste aquí */
-            petalsContainer.appendChild(petal);
+            const rotation = ((360 / frontPetals) * i) + 18; // Desfase
+            // **SIN TRANSLATEY, SOLO ROTACIÓN**
+            petal.style.transform = `rotate(${rotation}deg)`;
+            sunflower.appendChild(petal);
         }
 
-        sunflower.appendChild(petalsContainer);
-
-        // 3. El centro se añade al final de `sunflower` para que esté encima de `petals-container`
+        // 3. El centro se añade al final
         const centerDiv = document.createElement('div');
         centerDiv.classList.add('center');
         sunflower.appendChild(centerDiv);
