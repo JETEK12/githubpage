@@ -15,35 +15,94 @@
         text-align: center;
     }
 
-    /* Estrellas */
-    .stars {
+    /* --- ESTRELLAS --- */
+    .star {
         position: absolute;
         width: 2px;
         height: 2px;
         background: white;
-        animation: blink 2s infinite;
+        border-radius: 50%;
+        /* La animación se aplica desde JS para que cada una sea única */
+        animation-name: twinkle;
+        animation-iteration-count: infinite;
     }
-    @keyframes blink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.5; }
+    
+    /* Animación de tintineo más natural */
+    @keyframes twinkle {
+        0%   { opacity: 0.4; transform: scale(0.8); }
+        50%  { opacity: 1;   transform: scale(1.2); }
+        100% { opacity: 0.4; transform: scale(0.8); }
     }
 
-    /* Corazones */
-    .heart {
+    /* --- GIRASOLES --- */
+    .sunflower {
         position: absolute;
-        bottom: 0;
-        color: red;
-        font-size: 24px;
-        animation: rise 3s linear forwards;
+        bottom: -50px; /* Empiezan fuera de la pantalla */
+        width: 80px;
+        height: 80px;
+        animation: growAndSway 8s linear forwards;
     }
-    @keyframes rise {
-        0% { transform: translateY(0) scale(1); opacity: 1; }
-        100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+
+    .sunflower .center {
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        background: #583e2e;
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+    }
+
+    .sunflower .petal {
+        position: absolute;
+        width: 20px;
+        height: 35px;
+        background: #FFC700; /* Amarillo girasol */
+        border-radius: 50% 50% 0 0;
+        top: 50%;
+        left: 50%;
+        transform-origin: bottom center;
+        margin-left: -10px; /* Centrar el pétalo */
+        z-index: 1;
+    }
+
+    /* Posicionar los 12 pétalos en círculo */
+    .petal:nth-child(1)  { transform: rotate(0deg) translateY(-20px); }
+    .petal:nth-child(2)  { transform: rotate(30deg) translateY(-20px); }
+    .petal:nth-child(3)  { transform: rotate(60deg) translateY(-20px); }
+    .petal:nth-child(4)  { transform: rotate(90deg) translateY(-20px); }
+    .petal:nth-child(5)  { transform: rotate(120deg) translateY(-20px); }
+    .petal:nth-child(6)  { transform: rotate(150deg) translateY(-20px); }
+    .petal:nth-child(7)  { transform: rotate(180deg) translateY(-20px); }
+    .petal:nth-child(8)  { transform: rotate(210deg) translateY(-20px); }
+    .petal:nth-child(9)  { transform: rotate(240deg) translateY(-20px); }
+    .petal:nth-child(10) { transform: rotate(270deg) translateY(-20px); }
+    .petal:nth-child(11) { transform: rotate(300deg) translateY(-20px); }
+    .petal:nth-child(12) { transform: rotate(330deg) translateY(-20px); }
+
+    /* Animación para que los girasoles crezcan y se balanceen */
+    @keyframes growAndSway {
+        0% {
+            transform: translateY(0) scale(0);
+            opacity: 0;
+        }
+        50% {
+            transform: translateY(-50vh) scale(1) rotate(10deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-100vh) scale(1.2) rotate(-10deg);
+            opacity: 0;
+        }
     }
 
     h1 {
         margin-top: 20vh;
         font-size: 2.5em;
+        z-index: 10;
+        position: relative;
     }
 
     p {
@@ -51,6 +110,8 @@
         margin: 20px auto;
         font-size: 1.2em;
         line-height: 1.6em;
+        z-index: 10;
+        position: relative;
     }
 </style>
 </head>
@@ -65,27 +126,48 @@
 </p>
 
 <script>
-    // Crear estrellas
-    for (let i = 0; i < 100; i++) {
+    // --- LÓGICA PARA LAS ESTRELLAS ---
+    const starContainer = document.body;
+    for (let i = 0; i < 150; i++) { // Aumenté un poco la cantidad
         let star = document.createElement("div");
-        star.classList.add("stars");
+        star.classList.add("star");
         star.style.top = Math.random() * 100 + "vh";
         star.style.left = Math.random() * 100 + "vw";
-        document.body.appendChild(star);
+        
+        // Asignar duración y retraso aleatorios para que no tintineen todas a la vez
+        star.style.animationDuration = (Math.random() * 3 + 2) + 's'; // Entre 2s y 5s
+        star.style.animationDelay = Math.random() * 3 + 's'; // Hasta 3s de retraso
+        
+        starContainer.appendChild(star);
     }
 
-    // Animar corazones durante 1 segundo
-    function createHeart() {
-        let heart = document.createElement("div");
-        heart.classList.add("heart");
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.innerHTML = "❤️";
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 3000);
+    // --- LÓGICA PARA LOS GIRASOLES ---
+    function createSunflower() {
+        const sunflower = document.createElement('div');
+        sunflower.classList.add('sunflower');
+        
+        // Crear la estructura de la flor (centro y pétalos)
+        let petalsHTML = '';
+        for (let i = 0; i < 12; i++) {
+            petalsHTML += '<div class="petal"></div>';
+        }
+        sunflower.innerHTML = `<div class="center"></div>${petalsHTML}`;
+        
+        // Posición y animación aleatorias
+        sunflower.style.left = (Math.random() * 90 + 5) + 'vw'; // Evita los bordes
+        sunflower.style.animationDuration = (Math.random() * 5 + 7) + 's'; // Duración entre 7s y 12s
+        
+        document.body.appendChild(sunflower);
+        
+        // Eliminar la flor después de que termine su animación para no saturar la página
+        setTimeout(() => {
+            sunflower.remove();
+        }, 12000); // Un poco más que la duración máxima de la animación
     }
 
-    let heartInterval = setInterval(createHeart, 200);
-    setTimeout(() => clearInterval(heartInterval), 1000);
+    // Crear un nuevo girasol cada cierto tiempo
+    setInterval(createSunflower, 1500);
+
 </script>
 
 </body>
