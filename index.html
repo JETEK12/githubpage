@@ -35,67 +35,70 @@
     /* --- GIRASOLES CORREGIDOS --- */
     .sunflower {
         position: absolute;
-        bottom: -100px;
-        width: 120px;
-        height: 120px;
+        bottom: -100px; /* Empiezan más abajo para que el crecimiento sea más visible */
+        width: 140px; /* Tamaño base más grande */
+        height: 140px;
         animation: growAndSway 8s linear forwards;
-        transform-origin: center bottom;
+        transform-origin: center bottom; /* Para que crezca desde abajo */
     }
 
     .sunflower .petal {
         position: absolute;
-        width: 30px;
-        height: 60px;
-        background: #FFD700;
-        border-radius: 50% / 80% 80% 20% 20%;
+        width: 35px; /* Pétalo más grande */
+        height: 70px; /* Pétalo más grande */
+        background: #FFD700; /* Amarillo girasol, un poco más brillante */
+        border-radius: 50% / 80% 80% 20% 20%; /* Forma de pétalo más natural */
         top: 50%;
         left: 50%;
-        transform-origin: center bottom;
-        margin-left: -15px;
-        margin-top: -30px;
-        box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        transform-origin: center bottom; /* Gira desde la base del pétalo */
+        margin-left: -17.5px; /* Centrar el pétalo */
+        margin-top: -35px; /* Ajustar posición vertical */
+        box-shadow: 0 0 5px rgba(0,0,0,0.2); /* Sombra sutil para profundidad */
     }
 
-    .petal:nth-child(1)  { transform: translateX(-50%) rotate(0deg) translateY(-30px); }
-    .petal:nth-child(2)  { transform: translateX(-50%) rotate(30deg) translateY(-30px); }
-    .petal:nth-child(3)  { transform: translateX(-50%) rotate(60deg) translateY(-30px); }
-    .petal:nth-child(4)  { transform: translateX(-50%) rotate(90deg) translateY(-30px); }
-    .petal:nth-child(5)  { transform: translateX(-50%) rotate(120deg) translateY(-30px); }
-    .petal:nth-child(6)  { transform: translateX(-50%) rotate(150deg) translateY(-30px); }
-    .petal:nth-child(7)  { transform: translateX(-50%) rotate(180deg) translateY(-30px); }
-    .petal:nth-child(8)  { transform: translateX(-50%) rotate(210deg) translateY(-30px); }
-    .petal:nth-child(9)  { transform: translateX(-50%) rotate(240deg) translateY(-30px); }
-    .petal:nth-child(10) { transform: translateX(-50%) rotate(270deg) translateY(-30px); }
-    .petal:nth-child(11) { transform: translateX(-50%) rotate(300deg) translateY(-30px); }
-    .petal:nth-child(12) { transform: translateX(-50%) rotate(330deg) translateY(-30px); }
+    /* Posicionar los 12 pétalos en círculo */
+    /* Cada pétalo se rota y luego se traslada hacia afuera desde el centro */
+    .petal:nth-child(1)  { transform: translateX(-50%) rotate(0deg) translateY(-40px); }
+    .petal:nth-child(2)  { transform: translateX(-50%) rotate(30deg) translateY(-40px); }
+    .petal:nth-child(3)  { transform: translateX(-50%) rotate(60deg) translateY(-40px); }
+    .petal:nth-child(4)  { transform: translateX(-50%) rotate(90deg) translateY(-40px); }
+    .petal:nth-child(5)  { transform: translateX(-50%) rotate(120deg) translateY(-40px); }
+    .petal:nth-child(6)  { transform: translateX(-50%) rotate(150deg) translateY(-40px); }
+    .petal:nth-child(7)  { transform: translateX(-50%) rotate(180deg) translateY(-40px); }
+    .petal:nth-child(8)  { transform: translateX(-50%) rotate(210deg) translateY(-40px); }
+    .petal:nth-child(9)  { transform: translateX(-50%) rotate(240deg) translateY(-40px); }
+    .petal:nth-child(10) { transform: translateX(-50%) rotate(270deg) translateY(-40px); }
+    .petal:nth-child(11) { transform: translateX(-50%) rotate(300deg) translateY(-40px); }
+    .petal:nth-child(12) { transform: translateX(-50%) rotate(330deg) translateY(-40px); }
     
     .sunflower .center {
         position: absolute;
-        width: 40px;
-        height: 40px;
-        background: #8B4513;
+        width: 50px; /* Centro más grande */
+        height: 50px; /* Centro más grande */
+        background: #8B4513; /* Marrón más oscuro */
         border-radius: 50%;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        z-index: 10;
-        box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+        z-index: 10; /* Aseguramos que el centro esté SIEMPRE encima de los pétalos */
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.3); /* Sombra interior para profundidad */
     }
 
+    /* Animación para que los girasoles crezcan y se balanceen */
     @keyframes growAndSway {
         0% {
             transform: translateY(0) scale(0);
             opacity: 0;
         }
-        20% {
+        20% { /* Un poco de retraso en el crecimiento inicial */
             opacity: 1;
         }
         50% {
-            transform: translateY(-50vh) scale(1) rotateZ(10deg);
+            transform: translateY(-50vh) scale(1) rotateZ(10deg); /* Usamos rotateZ */
             opacity: 1;
         }
         100% {
-            transform: translateY(-100vh) scale(1.2) rotateZ(-10deg);
+            transform: translateY(-100vh) scale(1.2) rotateZ(-10deg); /* Usamos rotateZ */
             opacity: 0;
         }
     }
@@ -173,15 +176,19 @@
         const sunflower = document.createElement('div');
         sunflower.classList.add('sunflower');
         
-        const centerDiv = document.createElement('div');
-        centerDiv.classList.add('center');
-        sunflower.appendChild(centerDiv);
-
+        // **IMPORTANTE**: Crear los pétalos PRIMERO
         for (let i = 0; i < 12; i++) {
             const petalDiv = document.createElement('div');
             petalDiv.classList.add('petal');
+            // Aquí no necesitamos una clase específica para cada pétalo en JS,
+            // ya que CSS usa :nth-child(n) para rotarlos.
             sunflower.appendChild(petalDiv);
         }
+
+        // Y el centro DESPUÉS de todos los pétalos para que siempre esté encima
+        const centerDiv = document.createElement('div');
+        centerDiv.classList.add('center');
+        sunflower.appendChild(centerDiv);
         
         sunflower.style.left = (Math.random() * 90 + 5) + 'vw';
         sunflower.style.animationDuration = (Math.random() * 5 + 7) + 's';
