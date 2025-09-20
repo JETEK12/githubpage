@@ -106,7 +106,6 @@
     h1, p {
         position: relative;
         z-index: 100;
-        /* **AQUÍ ESTÁ EL CAMBIO** */
         text-shadow: 
             -1px -1px 0 #000,  
              1px -1px 0 #000,
@@ -129,6 +128,28 @@
     @keyframes fadeInText {
         from { opacity: 0; }
         to { opacity: 1; }
+    }
+
+    /* --- ESTILOS PARA EL NUEVO MENSAJE FINAL --- */ /* <-- NUEVO */
+    #mensajeFinal {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 200;
+        font-family: 'Dancing Script', cursive;
+        font-size: 2.3em;
+        color: #FFD700; /* Color dorado como los girasoles */
+        text-shadow: 
+            -1px -1px 0 #000,  
+             1px -1px 0 #000,
+            -1px  1px 0 #000,
+             1px  1px 0 #000;
+        opacity: 0;
+        animation: fadeInText 4s ease-in forwards;
+        animation-delay: 1s; /* Pequeña espera antes de aparecer */
+        width: 90%;
+        max-width: 800px;
     }
 </style>
 </head>
@@ -170,7 +191,19 @@
     let heartInterval = setInterval(createHeart, 200);
     setTimeout(() => clearInterval(heartInterval), 1000);
 
-    // --- LÓGICA PARA GIRASOLES ---
+    // --- LÓGICA PARA GIRASOLES Y MENSAJE FINAL ---
+
+    let contadorGirasoles = 0; // <-- NUEVO: Variable para contar los girasoles
+
+    // <-- NUEVO: Función para mostrar el mensaje final
+    function mostrarMensajeFinal() {
+        const mensaje = document.createElement('h2');
+        mensaje.id = 'mensajeFinal';
+        // Usamos &lt; para el símbolo '<' para que no se confunda con una etiqueta HTML
+        mensaje.innerHTML = 'Que estas flores eternas representen lo mucho que te amo... y aun así es poco &lt;3';
+        document.body.appendChild(mensaje);
+    }
+
     function createSunflower() {
         const sunflower = document.createElement('div');
         sunflower.classList.add('sunflower');
@@ -201,10 +234,19 @@
         sunflower.style.animationDuration = (Math.random() * 5 + 8) + 's';
         
         document.body.appendChild(sunflower);
+
+        contadorGirasoles++; // <-- NUEVO: Aumentamos el contador en 1
+
+        // <-- NUEVO: Comprobamos si ya llegamos a 10 girasoles
+        if (contadorGirasoles === 10) {
+            mostrarMensajeFinal();
+        }
         
         setTimeout(() => { sunflower.remove(); }, 13000);
     }
+    
     setInterval(createSunflower, 2000);
+
 </script>
 
 </body>
