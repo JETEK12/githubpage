@@ -15,24 +15,54 @@
         text-align: center;
     }
 
-    /* --- ESTRELLAS --- */
+    /* --- ESTRELLAS (AHORA CON FORMA DE ESTRELLA) --- */
     .star {
         position: absolute;
-        width: 2px;
-        height: 2px;
-        background: white;
-        border-radius: 50%;
+        width: 0;
+        height: 0;
+        border-right: 4px solid transparent;
+        border-bottom: 3px solid white;
+        border-left: 4px solid transparent;
+        transform: rotate(35deg); /* Para darle una orientación de estrella */
+        /* Pseudo-elementos para las puntas restantes */
         animation-name: twinkle;
         animation-iteration-count: infinite;
+        filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.7)); /* Un poco de resplandor */
+    }
+
+    .star::before {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-right: 4px solid transparent;
+        border-bottom: 3px solid white;
+        border-left: 4px solid transparent;
+        transform: rotate(-70deg);
+        top: -2.5px;
+        left: -4px;
+    }
+
+    .star::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-right: 4px solid transparent;
+        border-bottom: 3px solid white;
+        border-left: 4px solid transparent;
+        transform: rotate(70deg);
+        top: -2.5px;
+        left: -4px;
     }
     
     @keyframes twinkle {
-        0%   { opacity: 0.4; transform: scale(0.8); }
-        50%  { opacity: 1;   transform: scale(1.2); }
-        100% { opacity: 0.4; transform: scale(0.8); }
+        0%   { opacity: 0.4; transform: scale(0.8) rotate(35deg); } /* Mantener rotación base */
+        50%  { opacity: 1;   transform: scale(1.2) rotate(35deg); }
+        100% { opacity: 0.4; transform: scale(0.8) rotate(35deg); }
     }
 
-    /* --- GIRASOLES (AHORA SÍ) --- */
+    /* --- GIRASOLES (SIN BOLA CAFÉ) --- */
     .sunflower {
         position: absolute;
         bottom: -150px;
@@ -42,40 +72,38 @@
         transform-origin: center bottom;
     }
 
+    /* Contenedor de pétalos para asegurar el z-index */
+    .sunflower .petals-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 5;
+    }
+
     .petal {
         position: absolute;
         width: 40px;
         height: 75px;
-        background: #FFD700;
+        background: #FFD700; /* Amarillo girasol */
         border-radius: 50% 50% 0 0;
-        top: 0; /* Lo posicionamos en la parte superior del contenedor */
+        top: 50%; /* Ahora ajustamos el top/left para el centro geométrico de la flor */
         left: 50%;
-        margin-left: -20px; /* Centramos el pétalo horizontalmente */
-        transform-origin: bottom center; /* La rotación ocurre desde la base */
+        transform-origin: bottom center;
+        margin-left: -20px; /* Mitad del width del pétalo para centrar */
+        box-shadow: 0 0 8px rgba(0,0,0,0.3);
     }
     
     .petal.back {
-        background: #EAA200;
-        transform: scale(1.05); /* Ligeramente más grandes para que asomen */
-        z-index: 5;
+        background: #EAA200; /* Un tono más oscuro para la capa trasera */
     }
 
     .petal.front {
-        z-index: 6;
+        transform: scale(0.9); /* Ligeramente más pequeños */
     }
     
-    .center {
-        position: absolute;
-        width: 65px; /* **TAMAÑO CLAVE** */
-        height: 65px; /* **TAMAÑO CLAVE** */
-        background: #654321;
-        border-radius: 50%;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 10;
-        box-shadow: inset 0 0 12px #2F1E0E;
-    }
+    /* El .center fue eliminado */
 
     @keyframes growAndSway {
         0%   { transform: translateY(0) scale(0) rotateZ(0deg); opacity: 0; }
@@ -115,7 +143,7 @@
 </p>
 
 <script>
-    // --- LÓGICA PARA ESTRELLAS Y CORAZONES (Sin cambios) ---
+    // --- LÓGICA PARA ESTRELLAS (Ajustado para nueva forma) ---
     const starContainer = document.body;
     for (let i = 0; i < 150; i++) {
         let star = document.createElement("div");
@@ -124,8 +152,14 @@
         star.style.left = Math.random() * 100 + "vw";
         star.style.animationDuration = (Math.random() * 3 + 2) + 's';
         star.style.animationDelay = Math.random() * 3 + 's';
+        
+        // Ajuste de tamaño para las estrellas, ya que la forma es más grande
+        const size = Math.random() * 0.5 + 0.5; // Entre 0.5 y 1.0
+        star.style.transform = `scale(${size}) rotate(35deg)`; // Aplicar escala inicial y rotación
         starContainer.appendChild(star);
     }
+
+    // --- LÓGICA PARA CORAZONES (Sin cambios) ---
     function createHeart() {
         let heart = document.createElement("div");
         heart.classList.add("heart");
@@ -137,39 +171,39 @@
     let heartInterval = setInterval(createHeart, 200);
     setTimeout(() => clearInterval(heartInterval), 1000);
 
-    // --- LÓGICA PARA GIRASOLES (Simplificada) ---
+    // --- LÓGICA PARA GIRASOLES (Sin bola café) ---
     function createSunflower() {
         const sunflower = document.createElement('div');
         sunflower.classList.add('sunflower');
+        
+        // Contenedor para los pétalos (clave para el z-index)
+        const petalsContainer = document.createElement('div');
+        petalsContainer.classList.add('petals-container');
 
-        // **LÓGICA SIMPLIFICADA Y CORREGIDA**
         const backPetals = 8;
         const frontPetals = 10;
 
-        // 1. Capa de pétalos traseros
+        // 1. Capa de pétalos traseros (más oscuros)
         for (let i = 0; i < backPetals; i++) {
             const petal = document.createElement('div');
             petal.classList.add('petal', 'back');
             const rotation = (360 / backPetals) * i;
-            // **SIN TRANSLATEY, SOLO ROTACIÓN**
-            petal.style.transform = `rotate(${rotation}deg)`;
-            sunflower.appendChild(petal);
+            petal.style.transform = `rotate(${rotation}deg) translateY(-35px)`; /* Ajuste aquí */
+            petalsContainer.appendChild(petal);
         }
 
-        // 2. Capa de pétalos delanteros
+        // 2. Capa de pétalos delanteros (más claros y pequeños)
         for (let i = 0; i < frontPetals; i++) {
             const petal = document.createElement('div');
             petal.classList.add('petal', 'front');
-            const rotation = ((360 / frontPetals) * i) + 18; // Desfase
-            // **SIN TRANSLATEY, SOLO ROTACIÓN**
-            petal.style.transform = `rotate(${rotation}deg)`;
-            sunflower.appendChild(petal);
+            const rotation = ((360 / frontPetals) * i) + 18;
+            petal.style.transform = `rotate(${rotation}deg) translateY(-40px)`; /* Ajuste aquí */
+            petalsContainer.appendChild(petal);
         }
 
-        // 3. El centro se añade al final
-        const centerDiv = document.createElement('div');
-        centerDiv.classList.add('center');
-        sunflower.appendChild(centerDiv);
+        sunflower.appendChild(petalsContainer);
+
+        // **ELIMINADO**: El centro ya no se añade
         
         sunflower.style.left = (Math.random() * 85 + 7.5) + 'vw';
         sunflower.style.animationDuration = (Math.random() * 5 + 8) + 's';
